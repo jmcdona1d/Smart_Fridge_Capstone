@@ -1,13 +1,16 @@
 import RPi.GPIO as GPIO
 import time
 
-led_pin = 12
-light_pin = 18
+led_pin= 21
+
+light_pin=26
+
 
 def main():
     prev_value = None
 
-    GPIO.setmode(GPIO.BOARD)
+    GPIO.setmode(GPIO.BCM) 
+
     GPIO.setup(light_pin, GPIO.IN)
     GPIO.setup(led_pin, GPIO.OUT)
 

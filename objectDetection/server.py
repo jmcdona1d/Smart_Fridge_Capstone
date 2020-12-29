@@ -1,8 +1,12 @@
 from flask import Flask, make_response, jsonify, request
+from pymongo import MongoClient
 import numpy as np
 import cv2
 
 app = Flask(__name__)
+
+dbconnection = "mongodb+srv://{}:{}@capstone.o2r0q.mongodb.net/test?retryWrites=true&w=majority&ssl_cert_reqs=CERT_NONE".format("user", "8nA4UGa1SwF2CeJg")
+database = MongoClient(dbconnection)
 
 @app.route("/")
 def hello():

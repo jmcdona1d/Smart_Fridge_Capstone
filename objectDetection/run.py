@@ -1,8 +1,10 @@
+import requests
 import cv2
 import RPi.GPIO as GPIO
 import time
 import threading
 import numpy as np
+from flask import jsonify
 
 led_pin = 21
 light_pin = 26
@@ -11,6 +13,7 @@ cam_buffer = []
 index = 0
 MAX_BUFFER_SIZE = 15
 collecting_frames = False
+headers = {'content-type' : 'image/jpg'}
 
 def setup():
     GPIO.setmode(GPIO.BCM)
@@ -77,6 +80,16 @@ def avg_histogram_val(img):
 
     mean = mean / total
     print(mean)
+
+#eventually would take an image array
+def send_to_server(img):
+    s = requests.Session()
+    img = cv2.imread("pics/testingpic0.jpg")
+    _, img_encoded = cv2.imencode('.jpg', img)
+    print(type(img_encoded.tostring()))  
+    res = s.get(url="http://192.168.2.11:5000/imageTest", data= img_encoded.tostring(), headers=headers)
+    print(res.json())
+
 
 def process_frames():
     global cam_buffer

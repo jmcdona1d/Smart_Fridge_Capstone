@@ -135,6 +135,7 @@ dmypy.json
 .pytype/
 
 capstone
+pics
 
 # Cython debug symbols
 cython_debug/

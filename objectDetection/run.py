@@ -14,6 +14,7 @@ index = 0
 MAX_BUFFER_SIZE = 15
 collecting_frames = False
 headers = {'content-type' : 'image/jpg'}
+SERVER_URL = "http://192.168.2.11:5000"
 
 def setup():
     GPIO.setmode(GPIO.BCM)
@@ -81,15 +82,16 @@ def avg_histogram_val(img):
     mean = mean / total
     print(mean)
 
-#eventually would take an image array
-def send_to_server(img):
+def send_to_server(img_arr):
     s = requests.Session()
-    img = cv2.imread("pics/testingpic0.jpg")
-    _, img_encoded = cv2.imencode('.jpg', img)
-    print(type(img_encoded.tostring()))  
-    res = s.get(url="http://192.168.2.11:5000/imageTest", data= img_encoded.tostring(), headers=headers)
-    print(res.json())
 
+    for image in img_arr:
+        _, img_encoded = cv2.imencode('.jpg', image)
+        res = s.get(url=SERVER_URL+"/collectImage", data=img_encoded.tostring(), headers=headers)
+        print(res.json())
+
+    res = s.get(url=SERVER_URL+"/processImages")
+    print(res.json())
 
 def process_frames():
     global cam_buffer
@@ -114,5 +116,13 @@ def main():
     process_frames()
     print("finished")
 
+
 if __name__ == "__main__":
-    main()
+    first = cv2.imread("pics/1.jpg")
+    second = cv2.imread("pics/2.jpg")
+    third = cv2.imread("pics/3.jpg")
+
+    img_arr = [first, second, third]
+    
+    send_to_server(img_arr)
+#    main()

@@ -1,13 +1,11 @@
 from flask import Flask, make_response, jsonify, request
-from pymongo import MongoClient
 import numpy as np
 import cv2
+import detection_mock
+import db
 
 app = Flask(__name__)
 image_buffer = []
-
-dbconnection = "mongodb+srv://{}:{}@capstone.o2r0q.mongodb.net/test?retryWrites=true&w=majority&ssl_cert_reqs=CERT_NONE".format("user", "8nA4UGa1SwF2CeJg")
-database = MongoClient(dbconnection)
 
 @app.route("/")
 def hello():
@@ -31,5 +29,14 @@ def process_images():
     image_buffer = [] #reset buffer for next call - we might actually end up wanting to save images to db app before this
     return make_response(jsonify({'result':'success'})), 200
 
+@app.route("/uploadTest")
+def db_test():
+    res = detection_mock.detect(None)   
+    print(res)
+
+    db.upload_to_fridge(res)
+    return "Image Uploaded"
+
 if __name__ == "__main__":
-    app.run('192.168.2.37')
+#    app.run('192.168.2.37')
+    app.run(host='0.0.0.0', port=40002)

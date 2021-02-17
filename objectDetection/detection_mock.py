@@ -3,7 +3,7 @@ import numpy as np
 
 def detect(image):
 
-    height, width = image.shape
+    #height, width = image.shape
 
     annotation = {
         "items": 3,

@@ -1,5 +1,9 @@
 from flask import Flask, make_response, jsonify, request
 import numpy as np
+
+import sys
+
+sys.path.append('/usr/local/lib/python3.8/site-packages')
 import cv2
 import detection_mock
 import db

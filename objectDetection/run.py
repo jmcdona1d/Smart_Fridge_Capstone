@@ -113,7 +113,7 @@ def send_to_server(img_arr):
     res = s.get(url=SERVER_URL+"/processImages")
     print(res.json())
 
-def process_frames():
+def process_frames(name="pics/filteredFrame", server_active=True):
     global cam_buffers
     filtered_frames = []
 
@@ -128,10 +128,12 @@ def process_frames():
                 best_img = pic
                 max_val = histogram_val
         filtered_frames.append(best_img)
-        cv2.imwrite("pics/filteredFrame#{}.jpg".format(len(filtered_frames)), best_img)
+        cv2.imwrite(name+"{}.jpg".format(len(filtered_frames)), best_img)
+        print(name+"{}.jpg".format(len(filtered_frames)))
 
-    #Send filtered frames to server
-    send_to_server(filtered_frames)
+    if(server_active):
+        #Send filtered frames to server
+        send_to_server(filtered_frames)
 
 class camera_thread(threading.Thread):
     def __init__(self, name):
@@ -152,6 +154,16 @@ def main():
         time.sleep(30)
     print("finished")
 
+def save_photos():
+    global collecting_frames
+    setup()
+    set_name = input()
+    camera = camera_thread("Camera Threading")
+    camera.start()
+    time.sleep(5)
+    collecting_frames = False
+    process_frames("testingData/"+set_name, False)
+    print("saved pics")
 
 if __name__ == "__main__":
    # first = cv2.imread("pics/1.jpg")
@@ -161,4 +173,5 @@ if __name__ == "__main__":
    # img_arr = [first, second, third]
     
    # send_to_server(img_arr)
-     main()
+#     main()
+    save_photos()

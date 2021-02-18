@@ -38,14 +38,9 @@ def process_images():
 @app.route("/uploadTest")
 def db_test():
     res = detection_mock.detect(None)   
-    print(res)
-
-
-
-    #add date to result
-    #add image url to reuslt
-    
+    img_url = image_store.upload_image_path("testingData/all2.jpg")['url']
     res['timestamp'] = datetime.today()
+    res['image_url'] = img_url
     db.upload_to_fridge(res)
     return "Image Uploaded"
 

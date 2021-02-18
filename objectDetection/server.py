@@ -7,6 +7,8 @@ sys.path.append('/usr/local/lib/python3.8/site-packages')
 import cv2
 import detection_mock
 import db
+from datetime import datetime
+import image_store
 
 app = Flask(__name__)
 image_buffer = []
@@ -38,6 +40,12 @@ def db_test():
     res = detection_mock.detect(None)   
     print(res)
 
+
+
+    #add date to result
+    #add image url to reuslt
+    
+    res['timestamp'] = datetime.today()
     db.upload_to_fridge(res)
     return "Image Uploaded"
 

@@ -42,7 +42,7 @@
             android:textColor="@color/light_grey"
             android:layout_alignParentTop="true"
             android:padding="4dp"
-            android:layout_toEndOf="@id/foodName"
+            android:layout_toStartOf="@id/status"
             android:id="@+id/entryDate">
         </TextView>
 

@@ -1,15 +1,17 @@
 package com.example.smartfridgeproject;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class FoodItem {
     private int mImageResource;
     private String foodName;
-    private String entryDate;
-    private String expiryDate;
+    private Date entryDate;
+    private Date expiryDate;
     private int foodStatus;
     private boolean showMenu;
 
 
-    public FoodItem(int image, String food, String entry, String expiry){
+    public FoodItem(int image, String food, Date entry, Date expiry){
         mImageResource=image;
         foodName=food;
         entryDate=entry;
@@ -30,11 +32,11 @@ public class FoodItem {
         return foodName;
     }
 
-    public String getEntryDate() {
+    public Date getEntryDate() {
         return entryDate;
     }
 
-    public String getExpiryDate() {
+    public Date getExpiryDate() {
         return expiryDate;
     }
 
@@ -44,11 +46,11 @@ public class FoodItem {
 
     public boolean isShowMenu() { return showMenu; }
 
-    public void setEntryDate(String entryDate) {
+    public void setEntryDate(Date entryDate) {
         this.entryDate = entryDate;
     }
 
-    public void setExpiryDate(String expiryDate) {
+    public void setExpiryDate(Date expiryDate) {
         this.expiryDate = expiryDate;
     }
 

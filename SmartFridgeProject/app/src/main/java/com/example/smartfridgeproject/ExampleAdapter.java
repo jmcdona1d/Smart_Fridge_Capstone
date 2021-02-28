@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
 
@@ -68,11 +69,12 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
 
     @Override
     public void onBindViewHolder(@NonNull ExampleViewHolder holder, int position) {
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
         FoodItem currentItem = foodList.get(position);
         holder.foodImage.setImageResource(currentItem.getImageResource());
         holder.status.setImageResource(currentItem.getFoodStatus());
-        holder.entryDate.setText(currentItem.getEntryDate());
-        holder.expiryDate.setText(currentItem.getExpiryDate());
+        holder.entryDate.setText(formatter.format(currentItem.getEntryDate()));
+        holder.expiryDate.setText(formatter.format(currentItem.getExpiryDate()));
         holder.foodName.setText(currentItem.getFoodName());
     }
 

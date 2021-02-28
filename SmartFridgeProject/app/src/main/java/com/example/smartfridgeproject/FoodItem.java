@@ -6,6 +6,8 @@ public class FoodItem {
     private String entryDate;
     private String expiryDate;
     private int foodStatus;
+    private boolean showMenu;
+
 
     public FoodItem(int image, String food, String entry, String expiry){
         mImageResource=image;
@@ -13,6 +15,11 @@ public class FoodItem {
         entryDate=entry;
         expiryDate=expiry;
         foodStatus=R.drawable.ic_good;
+        showMenu=false;
+    }
+
+    public void changeText1(String text) {
+        foodName = text;
     }
 
     public int getImageResource() {
@@ -35,6 +42,8 @@ public class FoodItem {
         return foodStatus;
     }
 
+    public boolean isShowMenu() { return showMenu; }
+
     public void setEntryDate(String entryDate) {
         this.entryDate = entryDate;
     }
@@ -54,4 +63,6 @@ public class FoodItem {
     public void setFoodStatus(int foodStatus) {
         this.foodStatus = foodStatus;
     }
+
+    public void setShowMenu(boolean showMenu) { this.showMenu=showMenu; }
 }

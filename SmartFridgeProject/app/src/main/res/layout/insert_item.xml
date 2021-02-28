@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/inserted_food_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="40dp"
+        android:gravity="center"
+        android:hint="Food name"/>
+    <TextView
+        android:id="@+id/date_added_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/inserted_food_name"
+        android:text="Date added"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:paddingTop="20dp"/>
+    <DatePicker
+        android:id="@+id/entry_date_chooser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/date_added_title"
+        android:datePickerMode="spinner"
+        android:calendarViewShown="false"
+    />
+    <TextView
+        android:id="@+id/expected_expiry_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/entry_date_chooser"
+        android:text="Expiry date (leave for auto entry)"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:paddingTop="20dp"/>
+    <DatePicker
+        android:id="@+id/expected_expiry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/expected_expiry_title"
+        android:datePickerMode="spinner"
+        android:calendarViewShown="false"
+        />
+</RelativeLayout>

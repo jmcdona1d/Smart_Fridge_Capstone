@@ -28,7 +28,7 @@ def collect_image():
 @app.route("/processImages")
 def process_images():
     global image_buffer
-    print(len(image_buffer)+ " Images Received")
+    print("{} images Received".format(len(image_buffer)))
 
     #Call to image processing methods here
     res = detection_mock.detect(None)
@@ -36,7 +36,7 @@ def process_images():
     #Upload images to cloud
     urls = []
     for img in image_buffer:
-        urls.append(image_store.upload_image(img))) 
+        urls.append(image_store.upload_image("upload", img)) 
     
     res['timestamp'] = datetime.today()
     res['urls'] = urls

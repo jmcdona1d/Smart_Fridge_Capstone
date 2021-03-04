@@ -173,5 +173,5 @@ if __name__ == "__main__":
    # img_arr = [first, second, third]
     
    # send_to_server(img_arr)
-#     main()
-    save_photos()
+    main()
+    # save_photos()

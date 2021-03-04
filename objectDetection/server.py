@@ -28,17 +28,28 @@ def collect_image():
 @app.route("/processImages")
 def process_images():
     global image_buffer
-    print(len(image_buffer))
+    print(len(image_buffer)+ " Images Received")
 
     #Call to image processing methods here
-    print(image_buffer[1])
+    res = detection_mock.detect(None)
+
+    #Upload images to cloud
+    urls = []
+    for img in image_buffer:
+        urls.append(image_store.upload_image(img))) 
+    
+    res['timestamp'] = datetime.today()
+    res['urls'] = urls
+    db.upload_to_fridge(res)
+
     image_buffer = [] #reset buffer for next call - we might actually end up wanting to save images to db app before this
+
     return make_response(jsonify({'result':'success'})), 200
 
 @app.route("/uploadTest")
 def db_test():
     res = detection_mock.detect(None)   
-    img_url = image_store.upload_image_path("testingData/all2.jpg")['url']
+    img_url = image_store.upload_image_path("testingData/all2.jpg")
     res['timestamp'] = datetime.today()
     res['image_url'] = img_url
     db.upload_to_fridge(res)

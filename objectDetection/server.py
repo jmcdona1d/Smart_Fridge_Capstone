@@ -35,7 +35,7 @@ def process_images():
 
     res = db.merge_old_new(res, image_buffer)
     db.upload_to_fridge(res)
-
+    print(res)
     image_buffer = [] #reset buffer for next call - we might actually end up wanting to save images to db app before this
 
     return make_response(jsonify({'result':'success'})), 200

@@ -24,17 +24,17 @@ def merge_old_new( data, images ):
 
     for i in range(data["items"]):
         item = {}
-        item["xmin"] = data["xmin"]
-        item["xmax"] = data["xmax"]
-        item["ymin"] = data["ymin"]
-        item["ymax"] = data["ymax"]
-        item["class"] = data["class"]
-        item["class_text"] = data["class_text"]
-        item["softmax"] = data["softmax"]
+        item["xmin"] = data["xmin"][i]
+        item["xmax"] = data["xmax"][i]
+        item["ymin"] = data["ymin"][i]
+        item["ymax"] = data["ymax"][i]
+        item["class"] = data["classes"][i]
+        item["class_text"] = data["classes_text"][i]
+        item["softmax"] = data["softmax"][i]
         item["timestamp_added"] = time_now
         # Fix this with cropped images
         item["image_url"] = "https://res.cloudinary.com/dcead5pak/image/upload/v1615077687/e99jsqiiixmii5e9eeep.jpg"
-        result.append(item)
+        result["items"].append(item)
 
     #Upload images to cloud
     urls = []
@@ -42,5 +42,6 @@ def merge_old_new( data, images ):
         urls.append(image_store.upload_image("upload", img)) 
 
     result["fridge_images"] = urls
+    print(result)
     return result
 

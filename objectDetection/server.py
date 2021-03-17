@@ -33,13 +33,7 @@ def process_images():
     #Call to image processing methods here
     res = detection_mock.detect(None)
 
-    #Upload images to cloud
-    urls = []
-    for img in image_buffer:
-        urls.append(image_store.upload_image("upload", img)) 
-    
-    res['timestamp'] = datetime.today()
-    res['urls'] = urls
+    res = db.merge_old_new(res, image_buffer)
     db.upload_to_fridge(res)
 
     image_buffer = [] #reset buffer for next call - we might actually end up wanting to save images to db app before this

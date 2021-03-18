@@ -10,10 +10,11 @@ fridge_content  = database.FridgeContents.user0 #table of items for "user0" - po
 def upload_to_fridge( data ):
 
     global fridge_content
-
+    
+    fridge_content.drop()
     fridge_content.insert_one({
-        "data" : data
-        })
+       "data" : data
+       })
 
 def merge_old_new( data, images ):
 

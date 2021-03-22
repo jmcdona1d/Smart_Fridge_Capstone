@@ -49,6 +49,12 @@ def db_test():
     db.upload_to_fridge(res)
     return "Image Uploaded"
 
+
+@app.route("/contents")
+def get_contents():
+    res = db.fetch_fridge_contents()
+    return res
+
 if __name__ == "__main__":
 #    app.run('192.168.2.37')
     app.run(host='0.0.0.0', port=40002)

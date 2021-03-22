@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 from datetime import datetime
+from bson.json_util import dumps
 import image_store
 
 dbconnection = "mongodb+srv://{}:{}@capstone.o2r0q.mongodb.net/test?retryWrites=true&w=majority&ssl_cert_reqs=CERT_NONE".format("user", "8nA4UGa1SwF2CeJg")
@@ -45,3 +46,9 @@ def merge_old_new( data, images ):
     print(result)
     return result
 
+def fetch_fridge_contents():
+
+    global fridge_content
+
+    contents = dumps(fridge_content.find())
+    return contents

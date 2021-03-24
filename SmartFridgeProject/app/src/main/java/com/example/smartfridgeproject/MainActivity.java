@@ -15,6 +15,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
+
 import java.util.*;
 import java.text.SimpleDateFormat;
 
@@ -24,6 +35,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements InsertItem.InsertItemListener {
     //foodList is the list of food that forms the recyclerview
     private ArrayList<FoodItem> foodList;
+    private static final String API_BASE_URL = "http://192.168.2.11:5000/";
 
     private RecyclerView mRecyclerView;
     private ExampleAdapter mAdapter;
@@ -33,13 +45,18 @@ public class MainActivity extends AppCompatActivity implements InsertItem.Insert
 
     private boolean canDelete;
 
+    private JSONObject apiResults;
+    private RequestQueue requestQueue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.requestQueue = Volley.newRequestQueue(this);
+        this.foodList = new ArrayList<>();
+        fetchFridgeContents(); //read api/db for current fridge contents to display
 
-        createFoodList();
-        buildRecyclerView();
+        //createFoodList(); hide now that items will get pulled in dynamically
 
         buttonInsert = findViewById(R.id.button_insert);
 
@@ -88,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements InsertItem.Insert
         //SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
         //String strInsertionDate = formatter.format(insertionDate);
         //String strExpiryDate = formatter.format(expiryDate);
-        foodList.add(position, new FoodItem(R.drawable.eggplant, name, insertionDate, expiryDate));
+        foodList.add(position, new FoodItem(R.drawable.eggplant, name, insertionDate, expiryDate, null));
         mAdapter.notifyItemInserted(position);
     }
 
@@ -103,10 +120,10 @@ public class MainActivity extends AppCompatActivity implements InsertItem.Insert
     }
 
     public void createFoodList() {
-        foodList = new ArrayList<>();
-        foodList.add(new FoodItem(R.drawable.turnips, "Turnips", new Date(121, 1, 27), new Date(121, 3, 27)));
-        foodList.add(new FoodItem(R.drawable.eggplant, "Eggplant", new Date(121, 1, 17), new Date(121, 3, 7)));
-        foodList.add(new FoodItem(R.drawable.shrimp, "Shrimp", new Date(121, 2, 27), new Date(121, 2, 27)));
+        //foodList = new ArrayList<>();
+        foodList.add(new FoodItem(R.drawable.turnips, "Turnips", new Date(121, 1, 27), new Date(121, 3, 27), null));
+        foodList.add(new FoodItem(R.drawable.eggplant, "Eggplant", new Date(121, 1, 17), new Date(121, 3, 7), null));
+        foodList.add(new FoodItem(R.drawable.shrimp, "Shrimp", new Date(121, 2, 27), new Date(121, 2, 27), null));
     }
     public void buildRecyclerView() {
         mRecyclerView = findViewById(R.id.recyclerView);
@@ -132,5 +149,48 @@ public class MainActivity extends AppCompatActivity implements InsertItem.Insert
     @Override
     public void applyChanges(String food, Date insertionDate, Date expiryDate) {
         insertItem(food, insertionDate, expiryDate, foodList.size());
+    }
+
+    public void fetchFridgeContents(){
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, API_BASE_URL+"contents",
+                new Response.Listener<String>(){
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            System.out.println(response);
+                            String[] data = response.split(" \"data\"");
+
+                            String json_String = data[1].substring(1, data[1].length() - 2);
+
+
+                            System.out.println(json_String);
+                            apiResults = new JSONObject(json_String);
+                            System.out.println(apiResults.keys());
+
+                            JSONArray items = (JSONArray) apiResults.get("items");
+
+                            for(int i = 0; i < items.length(); i++){
+                                JSONObject item = (JSONObject) items.get(i);
+                                JSONObject dateObj = (JSONObject) item.get("timestamp_added");
+                                Date foodAdded = new Date();
+                                foodAdded.setTime((long) dateObj.get("$date")); //need to create expiry date as well to be this date + x days
+                                foodList.add(new FoodItem(0, (String) item.get("class_text"), foodAdded, foodAdded, (String) item.get("image_url")));
+
+                            }
+                            buildRecyclerView();
+
+                        }
+                        catch (Throwable t){
+                            System.out.println("Error in JSON");
+                        }
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        System.out.println(error.toString());
+                    }
+                });
+        this.requestQueue.add(stringRequest);
     }
 }

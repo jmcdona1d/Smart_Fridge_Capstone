@@ -9,15 +9,17 @@ public class FoodItem {
     private Date expiryDate;
     private int foodStatus;
     private boolean showMenu;
+    private String imageURl;
 
 
-    public FoodItem(int image, String food, Date entry, Date expiry){
+    public FoodItem(int image, String food, Date entry, Date expiry, String imageURl){
         mImageResource=image;
         foodName=food;
         entryDate=entry;
         expiryDate=expiry;
         foodStatus=R.drawable.ic_good;
         showMenu=false;
+        this.imageURl = imageURl;
     }
 
     public void changeText1(String text) {
@@ -67,4 +69,12 @@ public class FoodItem {
     }
 
     public void setShowMenu(boolean showMenu) { this.showMenu=showMenu; }
+
+    public String getImageURl() {
+        return imageURl;
+    }
+
+    public void setImageURl(String imageURl) {
+        this.imageURl = imageURl;
+    }
 }

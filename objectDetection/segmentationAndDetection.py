@@ -6,7 +6,7 @@ import tensorflow as tf
 
 #hyperparameters
 IMAGE_HEIGHT = 128
-SCORE_THRESHOLD = 0.999
+SCORE_THRESHOLD = 0.99
 NUM_PROPOSALS = 2000
 
 def filter_predictions( predictions, rects, threshold):

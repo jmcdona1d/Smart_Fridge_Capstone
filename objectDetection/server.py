@@ -36,8 +36,7 @@ def process_images():
     res1 = detection.detect(image_buffer[0])
     res2 = detection.detect(image_buffer[1])
     res3 =  detection.detect(image_buffer[2])
-    print(res1, res2, res3)
-    res = db.merge_old_new(res1, image_buffer)
+    res = db.merge_old_new([res1, res2, res3], image_buffer)
     db.upload_to_fridge(res)
     image_buffer = [] #reset buffer for next call - we might actually end up wanting to save images to db app before this
 

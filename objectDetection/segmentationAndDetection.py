@@ -40,7 +40,7 @@ f = open('../objectDetection/classid.txt', 'r')
 class_ids = np.array(f.read().splitlines())
 
 # Read image
-img_path = './objectDetection/test_images/lightingfix1.jpg'
+img_path = './test_images/lightingfix1.jpg'
 img = cv.imread(img_path)
 
 

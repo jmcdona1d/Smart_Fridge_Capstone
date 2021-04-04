@@ -29,7 +29,7 @@ def label_objects(img, label_indices, rects):
     cv.waitKey(0)
 
 # Load saved model
-model_path = './models/freiburg_mobilenetv2_model'
+model_path = '../models/freiburg_mobilenetv2_model'
 saved_model = tf.keras.models.load_model(model_path)
 saved_model = tf.keras.Sequential([saved_model, 
                                          tf.keras.layers.Softmax()])

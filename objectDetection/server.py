@@ -50,10 +50,15 @@ def db_test():
     return "Image Uploaded"
 
 
-@app.route("/contents")
-def get_contents():
-    res = db.fetch_fridge_contents()
-    return res
+@app.route("/contents", methods=["GET", "PUT"])
+def contents():
+    if request.method == "GET":
+        res = db.fetch_fridge_contents()
+        return res
+
+    elif request.method == "PUT":
+        db.upload_to_fridge(request)
+        return "image uploaded succesfully"
 
 if __name__ == "__main__":
 #    app.run('192.168.2.37')

@@ -66,7 +66,7 @@ rects = rects/resize_factor # Get coordinates for original image size
 rects = rects.astype(int)
 
 batch = np.empty([rects.shape[0], 256, 256,3])
-
+predictions = np.empty([rects.shape[0], 25])
 # Find a better way to do this
 for i, rect in enumerate(rects):
     if(i<NUM_PROPOSALS):
@@ -75,10 +75,13 @@ for i, rect in enumerate(rects):
             continue
 
         region = img[y:y+h, x:x+w] # crop image according to bounding box
-        batch[i,:,:] = cv.resize(region, (256, 256)) # warp region to input size of CNN
+        warped_region = cv.resize(region, (256, 256)) # warp region to input size of CNN
+        region_batch = warped_region[np.newaxis, :] # input has to be a batch
+        pred = saved_model.predict(region_batch)
+        predictions[i] = pred[0]
 
    
-predictions = saved_model.predict(batch)
+# predictions = saved_model.predict(batch)
 
 filtered_predictions, filtered_rects = filter_predictions(predictions, rects, SCORE_THRESHOLD)
 label_indices = np.argmax(filtered_predictions, axis=1)

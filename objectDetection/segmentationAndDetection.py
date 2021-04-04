@@ -36,7 +36,7 @@ saved_model = tf.keras.Sequential([saved_model,
 
 
 # read class ids
-f = open('./objectDetection/classid.txt', 'r')
+f = open('../objectDetection/classid.txt', 'r')
 class_ids = np.array(f.read().splitlines())
 
 # Read image

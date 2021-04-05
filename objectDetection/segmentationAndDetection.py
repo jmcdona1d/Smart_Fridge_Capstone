@@ -86,7 +86,7 @@ for i, rect in enumerate(rects):
 filtered_predictions, filtered_rects = filter_predictions(predictions, rects, SCORE_THRESHOLD)
 label_indices = np.argmax(filtered_predictions, axis=1)
 
-if(class_ids.size == 0):
+if(label_indices.size == 0):
     print("No objects found.")
 print(class_ids[label_indices])
 # label_objects(img, label_indices, filtered_rects)

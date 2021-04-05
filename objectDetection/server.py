@@ -55,6 +55,12 @@ def get_contents():
     res = db.fetch_fridge_contents()
     return res
 
+@app.route("/appUpdate/<userInput>", methods=['POST'])
+def recieve_input(userInput):
+    print (userInput.json)
+    db.upload_to_fridge(userInput.json)
+    return userInput
+
 if __name__ == "__main__":
 #    app.run('192.168.2.37')
     app.run(host='0.0.0.0', port=40002)

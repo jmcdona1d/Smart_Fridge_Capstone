@@ -15,10 +15,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -35,7 +39,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements InsertItem.InsertItemListener {
     //foodList is the list of food that forms the recyclerview
     private ArrayList<FoodItem> foodList;
-    private static final String API_BASE_URL = "http://192.168.2.11:5000/";
+    private static final String API_BASE_URL = "http://192.168.2.151";
 
     private RecyclerView mRecyclerView;
     private ExampleAdapter mAdapter;
@@ -45,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements InsertItem.Insert
 
     private boolean canDelete;
 
+    private JSONArray fullResponse;
     private JSONObject apiResults;
     private RequestQueue requestQueue;
 
@@ -105,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements InsertItem.Insert
         //SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
         //String strInsertionDate = formatter.format(insertionDate);
         //String strExpiryDate = formatter.format(expiryDate);
-        foodList.add(position, new FoodItem(R.drawable.eggplant, name, insertionDate, expiryDate, null));
+        foodList.add(position, new FoodItem(0, name, insertionDate, expiryDate, null));
         mAdapter.notifyItemInserted(position);
     }
 
@@ -149,15 +154,69 @@ public class MainActivity extends AppCompatActivity implements InsertItem.Insert
     @Override
     public void applyChanges(String food, Date insertionDate, Date expiryDate) {
         insertItem(food, insertionDate, expiryDate, foodList.size());
+        JSONObject encapsulatingItem=new JSONObject();
+        JSONObject dataItem = new JSONObject();
+        try {
+            dataItem.put("total_items", foodList.size());
+            JSONArray newItemsJsonList=new JSONArray();
+            for (int i=0; i<foodList.size(); i++){
+                //Default everything to 0 for now
+                JSONObject item = new JSONObject();
+                item.put("xmin", 0);
+                item.put("xmax", 0);
+                item.put("ymin", 0);
+                item.put("ymax", 0);
+                item.put("class", 0);
+                item.put("class_text", foodList.get(i).getFoodName());
+                item.put("softmax", 0);
+                JSONObject timestamp = new JSONObject();
+                timestamp.put("$date", foodList.get(i).getEntryDate());
+                item.put("timestamp_added", timestamp);
+                item.put("image_url", "Filler");
+                newItemsJsonList.put(item);
+            }
+            dataItem.put("items", newItemsJsonList);
+            JSONArray emptyArray=new JSONArray();
+            dataItem.put("fridge_images", emptyArray);
+            encapsulatingItem = (JSONObject) fullResponse.get(0);
+            encapsulatingItem.put("data", dataItem);
+            System.out.println("The encapsulating item is "+encapsulatingItem);
+            //fullResponse.put(encapsulatingItem);
+        }
+        catch (Throwable t){
+            System.out.println("Error in JSON"+t);
+        }
+        System.out.println("Right before the request, the fullResponse is "+fullResponse);
+        JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(Request.Method.POST, API_BASE_URL+":40002/appUpdate/"+dataItem, dataItem, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+               System.out.println(response.toString());
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("Error in upload: "+error.toString());
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("X-OAPI-Key","TQEEGSk8OgWlhteL8S8siKao2q6LIGdq");
+                headers.put("X-ISS-Key","2b2dd0d9dbb54ef79b7ee978532bc823");
+                return headers;
+            }
+        };
+        requestQueue.add(jsonArrayRequest);
     }
 
     public void fetchFridgeContents(){
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, API_BASE_URL+"contents",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, API_BASE_URL+":40002/contents",
                 new Response.Listener<String>(){
                     @Override
                     public void onResponse(String response) {
                         try {
-                            System.out.println(response);
+                            fullResponse = new JSONArray(response);
+                            //System.out.println("for experimental purposes, we find "+fullResponse.get(0));
                             String[] data = response.split(" \"data\"");
 
                             String json_String = data[1].substring(1, data[1].length() - 2);
@@ -165,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements InsertItem.Insert
 
                             System.out.println(json_String);
                             apiResults = new JSONObject(json_String);
-                            System.out.println(apiResults.keys());
+                            //System.out.println(apiResults.keys());
 
                             JSONArray items = (JSONArray) apiResults.get("items");
 
@@ -177,11 +236,12 @@ public class MainActivity extends AppCompatActivity implements InsertItem.Insert
                                 foodList.add(new FoodItem(0, (String) item.get("class_text"), foodAdded, foodAdded, (String) item.get("image_url")));
 
                             }
+                            //System.out.println("The foodlist is "+ foodList);
                             buildRecyclerView();
 
                         }
                         catch (Throwable t){
-                            System.out.println("Error in JSON");
+                            System.out.println("Error in JSON"+t);
                         }
                     }
                 },

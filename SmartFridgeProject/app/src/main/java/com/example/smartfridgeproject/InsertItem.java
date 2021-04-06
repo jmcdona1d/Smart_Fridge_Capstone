@@ -39,17 +39,15 @@ public class InsertItem extends AppCompatDialogFragment {
         init();
 
         builder.setView(view).setTitle("Insert Item")
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (init())
-                    sendData();
-            }
-        })
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 sendData();
+            }
+        })
+        .setNegativeButton("Delete item", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
             }
         });
         Dialog current=builder.create();

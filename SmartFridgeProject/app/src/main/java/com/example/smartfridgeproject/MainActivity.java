@@ -87,7 +87,9 @@ public class MainActivity extends AppCompatActivity implements InsertItem.Insert
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                System.out.println("Deleted");
                 removeItem(viewHolder.getAdapterPosition());
+                updateDatabase();
             }
         }).attachToRecyclerView(mRecyclerView);
     }
@@ -116,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements InsertItem.Insert
 
     public void removeItem(int position){
         foodList.remove(position);
+        updateDatabase();
         mAdapter.notifyItemRemoved(position);
     }
 
@@ -154,6 +157,9 @@ public class MainActivity extends AppCompatActivity implements InsertItem.Insert
     @Override
     public void applyChanges(String food, Date insertionDate, Date expiryDate) {
         insertItem(food, insertionDate, expiryDate, foodList.size());
+        updateDatabase();
+    }
+    public void updateDatabase(){
         JSONObject encapsulatingItem=new JSONObject();
         JSONObject dataItem = new JSONObject();
         try {
@@ -233,8 +239,8 @@ public class MainActivity extends AppCompatActivity implements InsertItem.Insert
                                 JSONObject dateObj = (JSONObject) item.get("timestamp_added");
                                 Date foodAdded = new Date();
                                 foodAdded.setTime((long) dateObj.get("$date")); //need to create expiry date as well to be this date + x days
+                                //foodList.add(new FoodItem(0, (String) item.get("class_text"), foodAdded, foodAdded, (String) item.get("image_url")));
                                 foodList.add(new FoodItem(0, (String) item.get("class_text"), foodAdded, foodAdded, (String) item.get("image_url")));
-
                             }
                             //System.out.println("The foodlist is "+ foodList);
                             buildRecyclerView();

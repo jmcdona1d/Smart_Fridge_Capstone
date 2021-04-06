@@ -16,15 +16,33 @@
         android:layout_marginBottom="100dp"
         />
 
-    <Button
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:id="@+id/button_insert"
         android:layout_height="wrap_content"
-        android:text="insert"
-        android:layout_centerInParent="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="25dp"
-        />
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/button_insert"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="24dp"
+            android:layout_marginHorizontal="20dp"
+            android:text="insert" />
+
+        <Button
+            android:id="@+id/view_contents"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerVertical="false"
+            android:layout_centerHorizontal="true"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="24dp"
+            android:text="View" />
+    </LinearLayout>
 
 
 </RelativeLayout>

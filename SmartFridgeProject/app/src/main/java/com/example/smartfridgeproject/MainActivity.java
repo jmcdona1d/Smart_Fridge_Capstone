@@ -39,13 +39,15 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements InsertItem.InsertItemListener {
     //foodList is the list of food that forms the recyclerview
     private ArrayList<FoodItem> foodList;
-    private static final String API_BASE_URL = "http://192.168.2.151";
+    private ArrayList<String> image_urls;
+    private static final String API_BASE_URL = "http://76.68.60.198";
 
     private RecyclerView mRecyclerView;
     private ExampleAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     private Button buttonInsert;
+    private Button buttonContents;
 
     private boolean canDelete;
 
@@ -59,11 +61,13 @@ public class MainActivity extends AppCompatActivity implements InsertItem.Insert
         setContentView(R.layout.activity_main);
         this.requestQueue = Volley.newRequestQueue(this);
         this.foodList = new ArrayList<>();
+        this.image_urls = new ArrayList<>();
         fetchFridgeContents(); //read api/db for current fridge contents to display
 
         //createFoodList(); hide now that items will get pulled in dynamically
 
         buttonInsert = findViewById(R.id.button_insert);
+        buttonContents = findViewById(R.id.view_contents);
 
         canDelete=false;
 
@@ -75,6 +79,13 @@ public class MainActivity extends AppCompatActivity implements InsertItem.Insert
                 //String givenName = editTextInsert.getText().toString();
                 //insertItem(givenName, foodList.size());
             }
+        });
+
+        buttonContents.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    openContents();
+        }
         });
 
 
@@ -106,6 +117,17 @@ public class MainActivity extends AppCompatActivity implements InsertItem.Insert
 
         insertItem.show(getSupportFragmentManager(), "New Food Item");
 
+    }
+
+    public void openContents(){
+        ContentView contentView = new ContentView();
+        Bundle args = new Bundle();
+        args.putString("url1", image_urls.get(0));
+        args.putString("url2", image_urls.get(1));
+        args.putString("url3", image_urls.get(2));
+
+        contentView.setArguments(args);
+        contentView.show(getSupportFragmentManager(), "contents");
     }
 
     public void insertItem (String name, Date insertionDate, Date expiryDate, int position){
@@ -182,8 +204,8 @@ public class MainActivity extends AppCompatActivity implements InsertItem.Insert
                 newItemsJsonList.put(item);
             }
             dataItem.put("items", newItemsJsonList);
-            JSONArray emptyArray=new JSONArray();
-            dataItem.put("fridge_images", emptyArray);
+            JSONArray images_JSON = new JSONArray(this.image_urls);
+            dataItem.put("fridge_images", images_JSON);
             encapsulatingItem = (JSONObject) fullResponse.get(0);
             encapsulatingItem.put("data", dataItem);
             System.out.println("The encapsulating item is "+encapsulatingItem);
@@ -242,6 +264,12 @@ public class MainActivity extends AppCompatActivity implements InsertItem.Insert
                                 //foodList.add(new FoodItem(0, (String) item.get("class_text"), foodAdded, foodAdded, (String) item.get("image_url")));
                                 foodList.add(new FoodItem(0, (String) item.get("class_text"), foodAdded, foodAdded, (String) item.get("image_url")));
                             }
+
+                            JSONArray urls = (JSONArray) apiResults.get("fridge_images");
+                            for (int i = 0; i <urls.length(); i++){
+                                image_urls.add((String) urls.get(i));
+                            }
+
                             //System.out.println("The foodlist is "+ foodList);
                             buildRecyclerView();
 

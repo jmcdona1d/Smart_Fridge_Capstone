@@ -21,4 +21,5 @@ def draw_boxes(image, annotation):
         t_size = cv2.getTextSize(label, cv2.FONT_HERSHEY_PLAIN, 1, 1)[0]
         cv2.rectangle(image, (xmin, ymin), (xmin+t_size[0]+3, ymin+t_size[1]+4), (0,255,0), -1)
         cv2.putText(image, label, (xmin, ymin+t_size[1]+4), cv2.FONT_HERSHEY_PLAIN, 1, [0,0,0], 1)
-        return image
+
+    return image

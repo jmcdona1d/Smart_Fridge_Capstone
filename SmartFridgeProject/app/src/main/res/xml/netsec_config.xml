@@ -4,5 +4,8 @@
         <domain includeSubdomains="true">184.147.132.57</domain>
         <domain includeSubdomains="true">192.168.2.11</domain>
         <domain includeSubdomains="true">192.168.2.151</domain>
+        <domain includeSubdomains="true">76.68.60.198</domain>
+        <domain includeSubdomains="true">res.cloudinary.com</domain>
+
     </domain-config>
 </network-security-config>

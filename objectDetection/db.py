@@ -12,7 +12,7 @@ def upload_to_fridge( data ):
     global fridge_content
     
     fridge_content.drop()
-    fridge_content.insert_on(
+    fridge_content.insert_one({
        "data" : data
        })
 

@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements InsertItem.Insert
         //SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
         //String strInsertionDate = formatter.format(insertionDate);
         //String strExpiryDate = formatter.format(expiryDate);
-        foodList.add(position, new FoodItem(0, name, insertionDate, expiryDate, null));
+        foodList.add(position, new FoodItem(0, name.substring(0, 1).toUpperCase()+name.substring(1), insertionDate, expiryDate, null));
         mAdapter.notifyItemInserted(position);
     }
 
@@ -240,7 +240,9 @@ public class MainActivity extends AppCompatActivity implements InsertItem.Insert
                                 Date foodAdded = new Date();
                                 foodAdded.setTime((long) dateObj.get("$date")); //need to create expiry date as well to be this date + x days
                                 //foodList.add(new FoodItem(0, (String) item.get("class_text"), foodAdded, foodAdded, (String) item.get("image_url")));
-                                foodList.add(new FoodItem(0, (String) item.get("class_text"), foodAdded, foodAdded, (String) item.get("image_url")));
+                                //insertItem((String) item.get("class_text"), foodAdded, foodAdded, foodList.size());
+                                String str = (String)item.get("class_text");
+                                foodList.add(new FoodItem(0, str.substring(0, 1).toUpperCase() + str.substring(1), foodAdded, foodAdded, (String) item.get("image_url")));
                             }
                             //System.out.println("The foodlist is "+ foodList);
                             buildRecyclerView();

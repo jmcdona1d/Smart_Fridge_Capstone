@@ -19,7 +19,7 @@ Technical Features which I contributed include:
 - Setup cloud storage and database to be able to store images and model results
 - Integrated mobile app with server to fetch and display dynamic results from the cloud
 
-Technologies used: Python, Android Studio, Java, Raspberry Pi, Jetson Nano
+Technologies used: Python, Android Studio, Java, Raspberry Pi, Jetson Nano, MongoDB, Cloudinary
 
 I had a great time with this project and felt it was a great way to demonstrate the technical and non-technical engineering skills I developed over the course of my undergraduate career! If you would like to learn more you can read our report [here](https://drive.google.com/file/d/1NqtQVDjD98wBss_v4H2FcauZi-LmMDBg/view?usp=sharing).
 

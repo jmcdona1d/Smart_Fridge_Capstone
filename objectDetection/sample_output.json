@@ -1,0 +1,54 @@
+{
+    "data_old":
+        {
+            "items": 3,
+            "xmin": [],
+            "ymin": [],
+            "xmax": [],
+            "ymax": [],
+            "classes": [],
+            "classes_text": [],
+            "softmax": [],
+            "timestamp": "2021-03-06T19:41:31.233+00:00",
+            "urls" : ["https://res.cloudinary.com/dcead5pak/image/upload/v1615077687/e99jsqiiixmii5e9eeep.jpg", "https://res.cloudinary.com/dcead5pak/image/upload/v1615077687/e99jsqiiixmii5e9eeep.jpg", "https://res.cloudinary.com/dcead5pak/image/upload/v1615077687/e99jsqiiixmii5e9eeep.jpg"]
+        }
+    
+}
+
+{
+    "total_items": 3,
+    "items": [
+        {
+            "xmin": 0.5415396690368652,
+            "xmax": 0.6994174718856812,
+            "ymin": 0.033709168434143066,
+            "ymax": 0.5525054335594177,
+            "class": 1,
+            "class_text": "jam",
+            "softmax": 0.3137070834636688,
+            "timestamp_added": "2021-04-05T22:31:17.356+00:00",
+        },
+        {
+            "xmin": 0.8590370416641235,
+            "xmax": 0.8953224420547485,
+            "ymin": 0.5498508214950562,
+            "ymax": 0.6545138359069824,
+            "class": 0,
+            "class_text": "coke",
+            "softmax": 0.2180229127407074,
+            "timestamp_added": "2021-04-05T22:31:17.356+00:00",
+        },
+        {
+            "xmin": 0.015111058950424194,
+            "xmax": 0.3095483183860779,
+            "ymin": 0.6341384649276733,
+            "ymax": 0.9738014936447144,
+            "class": 2,
+            "class_text": "juice",
+            "softmax": 0.18453870713710785,
+            "timestamp_added": "2021-04-05T22:31:17.356+00:00",
+        }
+    ],
+
+    "fridge_images": ["https://res.cloudinary.com/leftImageOfFridge", "https://res.cloudinary.com/rightImageOfFridge", "https://res.cloudinary.com/centerImageOfFridge"]
+}

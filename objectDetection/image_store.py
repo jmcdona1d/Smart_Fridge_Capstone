@@ -3,7 +3,7 @@ import cv2
 
 
 def upload_image_path(path):
-    result = upload(path, api_key="792227122254697", api_secret="JfCqgPYy-lb3LZVS_Spc5pO44rI", cloud_name="dcead5pak")['url']
+    result = upload(path, api_key=API_KEY, api_secret=API_SECRET, cloud_name=CLOUD_NAME)['url']
     return None
 
 def upload_image(name, img):
